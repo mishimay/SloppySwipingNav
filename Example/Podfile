@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'SloppySwipingNav_Example', :exclusive => true do
+  pod 'SloppySwipingNav', :path => '../'
+end
+
+target 'SloppySwipingNav_Tests', :exclusive => true do
+  pod 'SloppySwipingNav', :path => '../'
+
+  
+end
