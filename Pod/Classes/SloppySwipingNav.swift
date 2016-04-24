@@ -1,6 +1,6 @@
 import UIKit
 
-class SloppySwipingNav: UINavigationController, UIViewControllerTransitioningDelegate, UINavigationControllerDelegate {
+public class SloppySwipingNav: UINavigationController, UIViewControllerTransitioningDelegate, UINavigationControllerDelegate {
 
     private class SloppySwipingPanGestureRecognizer: UIPanGestureRecognizer {
     }
@@ -176,26 +176,26 @@ class SloppySwipingNav: UINavigationController, UIViewControllerTransitioningDel
     private let animatedTransitioning = AnimatedTransitioning()
     private let interactiveTransition = InteractiveTransition()
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         delegate = self
     }
 
-    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+    public func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
 
         if viewController != viewControllers.first { // Exclude root viewController
             interactiveTransition.attachToViewController(viewController)
         }
     }
 
-    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
         animatedTransitioning.reverse = operation == .Pop
         return animatedTransitioning
     }
 
-    func navigationController(navigationController: UINavigationController, interactionControllerForAnimationController animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+    public func navigationController(navigationController: UINavigationController, interactionControllerForAnimationController animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
 
         animatedTransitioning.linerAnimation = interactiveTransition.transitionInProgress
         return interactiveTransition.transitionInProgress ? interactiveTransition : nil
