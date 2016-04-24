@@ -1,25 +1,68 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="lRU-Yc-LbB">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="ufC-wZ-h7g">
+        <!--Sloppy Swiping Nav-->
+        <scene sceneID="i62-bf-Xgu">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
-                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                <navigationController id="lRU-Yc-LbB" customClass="SloppySwipingNav" customModule="SloppySwipingNav" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="eUa-dd-Z7h">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="c6y-SV-Wuz" kind="relationship" relationship="rootViewController" id="A2F-P0-eUI"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9Em-pl-Swl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-678" y="282"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="lkd-VK-Tiu">
+            <objects>
+                <viewController id="c6y-SV-Wuz" customClass="ViewController" customModule="SloppySwipingNav_Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NkO-Tw-fGR"/>
+                        <viewControllerLayoutGuide type="bottom" id="HIZ-BY-iAH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BYQ-Y1-Jqt">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="HBZ-eZ-7OL">
+                                <rect key="frame" x="20" y="72" width="560" height="508"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="HIZ-BY-iAH" firstAttribute="top" secondItem="HBZ-eZ-7OL" secondAttribute="bottom" constant="20" id="6dd-Yy-SM6"/>
+                            <constraint firstAttribute="trailing" secondItem="HBZ-eZ-7OL" secondAttribute="trailing" constant="20" id="BcV-AM-ImT"/>
+                            <constraint firstItem="HBZ-eZ-7OL" firstAttribute="leading" secondItem="BYQ-Y1-Jqt" secondAttribute="leading" constant="20" id="cVC-96-2ze"/>
+                            <constraint firstItem="HBZ-eZ-7OL" firstAttribute="top" secondItem="NkO-Tw-fGR" secondAttribute="bottom" constant="8" id="t6H-WM-w0O"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="49u-Mx-r2E">
+                        <barButtonItem key="rightBarButtonItem" title="Push" id="n2W-r3-Nxj">
+                            <connections>
+                                <segue destination="c6y-SV-Wuz" kind="show" id="2xV-58-adb"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="m6E-Su-f25" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="14" y="282"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="A2F-P0-eUI"/>
+    </inferredMetricsTieBreakers>
 </document>
