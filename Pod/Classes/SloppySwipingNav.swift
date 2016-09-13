@@ -5,7 +5,7 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
     private class SloppySwipingPanGestureRecognizer: UIPanGestureRecognizer {
     }
 
-    class AnimatedTransitioning: NSObject, UIViewControllerAnimatedTransitioning {
+    private class AnimatedTransitioning: NSObject, UIViewControllerAnimatedTransitioning {
 
         private let bottomViewOffset: CGFloat = -60
 
@@ -30,7 +30,7 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
             let finalFrameForToViewController = transitionContext.finalFrame(for: toViewController)
             let containerView = transitionContext.containerView
 
-            // 移動前のViewを設定
+            // Before move
             if !reverse {
                 toViewController.view.frame = finalFrameForToViewController.offsetBy(dx: fromViewController.view.frame.width, dy: 0)
                 addShadow(viewController: toViewController)
@@ -42,7 +42,7 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
                 toViewController.view.frame = finalFrameForToViewController.offsetBy(dx: bottomViewOffset, dy: 0)
             }
 
-            // 移動させる
+            // Move
             let animations = {
                 if !self.reverse {
                     toViewController.view.frame = finalFrameForToViewController
@@ -53,7 +53,7 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
                 }
             }
 
-            // 移動後の処理
+            // After move
             let completion = { (finished: Bool) in
                 if !self.reverse {
                     self.removeShadow(viewController: toViewController)
@@ -105,9 +105,9 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
 
     }
 
-    class InteractiveTransition: UIPercentDrivenInteractiveTransition, UIGestureRecognizerDelegate {
+    private class InteractiveTransition: UIPercentDrivenInteractiveTransition, UIGestureRecognizerDelegate {
 
-        private var navigationController: UINavigationController?
+        private weak var navigationController: UINavigationController?
         private var shouldCompleteTransition = false
         private(set) var transitionInProgress = false
 
