@@ -1,14 +1,16 @@
 PODS:
-  - SloppySwipingNav (1.0)
+  - SloppySwipingNav (1.0.1)
 
 DEPENDENCIES:
   - SloppySwipingNav (from `../`)
 
 EXTERNAL SOURCES:
   SloppySwipingNav:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
-  SloppySwipingNav: e9663eeedd11e048317825d5abdab867d96856de
+  SloppySwipingNav: 2b846a99ed680b7432d9e9930deddf4f0d1db2fd
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: fbb675c190238be96e7e7cc2ea8482191afae08d
+
+COCOAPODS: 1.1.0.rc.1

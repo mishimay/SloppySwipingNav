@@ -20,7 +20,7 @@ If you are using Storyboards, set `SloppySwipingNav` to the Navigation Controlle
 
 ## Requirements
 
-Swift 2.2
+Swift 3.0
 
 ## Installation
 

@@ -1,6 +1,6 @@
 import UIKit
 
-public class SloppySwipingNav: UINavigationController, UIViewControllerTransitioningDelegate, UINavigationControllerDelegate {
+open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioningDelegate, UINavigationControllerDelegate {
 
     private class SloppySwipingPanGestureRecognizer: UIPanGestureRecognizer {
     }
@@ -15,40 +15,40 @@ public class SloppySwipingNav: UINavigationController, UIViewControllerTransitio
                 duration = linerAnimation ? 0.4 : 0.4
             }
         }
-        private var duration: NSTimeInterval = 0
+        private var duration: TimeInterval = 0
 
-        func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+        func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
             return duration
         }
 
-        func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+        func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
             guard
-                let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey),
-                let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) else {
+                let fromViewController = transitionContext.viewController(forKey: .from),
+                let toViewController = transitionContext.viewController(forKey: .to) else {
                     return
             }
-            let finalFrameForToViewController = transitionContext.finalFrameForViewController(toViewController)
-            let containerView = transitionContext.containerView()
+            let finalFrameForToViewController = transitionContext.finalFrame(for: toViewController)
+            let containerView = transitionContext.containerView
 
             // 移動前のViewを設定
             if !reverse {
-                toViewController.view.frame = CGRectOffset(finalFrameForToViewController, fromViewController.view.frame.width, 0)
-                addShadow(toViewController)
-                containerView?.addSubview(toViewController.view)
+                toViewController.view.frame = finalFrameForToViewController.offsetBy(dx: fromViewController.view.frame.width, dy: 0)
+                addShadow(viewController: toViewController)
+                containerView.addSubview(toViewController.view)
             } else {
-                addShadow(fromViewController)
-                containerView?.insertSubview(toViewController.view, belowSubview: fromViewController.view)
+                addShadow(viewController: fromViewController)
+                containerView.insertSubview(toViewController.view, belowSubview: fromViewController.view)
 
-                toViewController.view.frame = CGRectOffset(finalFrameForToViewController, self.bottomViewOffset, 0)
+                toViewController.view.frame = finalFrameForToViewController.offsetBy(dx: bottomViewOffset, dy: 0)
             }
 
             // 移動させる
             let animations = {
                 if !self.reverse {
                     toViewController.view.frame = finalFrameForToViewController
-                    fromViewController.view.frame = CGRectOffset(finalFrameForToViewController, self.bottomViewOffset, 0)
+                    fromViewController.view.frame = finalFrameForToViewController.offsetBy(dx: self.bottomViewOffset, dy: 0)
                 } else {
-                    fromViewController.view.frame = CGRectOffset(finalFrameForToViewController, fromViewController.view.frame.width, 0)
+                    fromViewController.view.frame = finalFrameForToViewController.offsetBy(dx: fromViewController.view.frame.width, dy: 0)
                     toViewController.view.frame = finalFrameForToViewController
                 }
             }
@@ -56,36 +56,36 @@ public class SloppySwipingNav: UINavigationController, UIViewControllerTransitio
             // 移動後の処理
             let completion = { (finished: Bool) in
                 if !self.reverse {
-                    self.removeShadow(toViewController)
+                    self.removeShadow(viewController: toViewController)
                     fromViewController.view.frame = finalFrameForToViewController
                 } else {
-                    self.removeShadow(fromViewController)
+                    self.removeShadow(viewController: fromViewController)
                     fromViewController.view.frame.origin.x = 0
                 }
 
-                if transitionContext.transitionWasCancelled() {
+                if transitionContext.transitionWasCancelled {
                     toViewController.view.removeFromSuperview()
                 } else {
                     fromViewController.view.removeFromSuperview()
                 }
-                transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+                transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             }
 
             if linerAnimation {
-                UIView.animateWithDuration(
-                    transitionDuration(transitionContext),
+                UIView.animate(
+                    withDuration: transitionDuration(using: transitionContext),
                     delay: 0,
-                    options: [.CurveLinear, .AllowUserInteraction],
+                    options: [.curveLinear, .allowUserInteraction],
                     animations: animations,
                     completion: completion
                 )
             } else {
-                UIView.animateWithDuration(
-                    transitionDuration(transitionContext),
+                UIView.animate(
+                    withDuration: transitionDuration(using: transitionContext),
                     delay: 0,
                     usingSpringWithDamping: 1,
                     initialSpringVelocity: 0,
-                    options: [.CurveEaseInOut, .AllowUserInteraction],
+                    options: [.curveEaseInOut, .allowUserInteraction],
                     animations: animations,
                     completion: completion
                 )
@@ -94,7 +94,7 @@ public class SloppySwipingNav: UINavigationController, UIViewControllerTransitio
 
         private func addShadow(viewController: UIViewController) {
             viewController.view.layer.masksToBounds = false
-            viewController.view.layer.shadowColor = UIColor.blackColor().CGColor
+            viewController.view.layer.shadowColor = UIColor.black.cgColor
             viewController.view.layer.shadowRadius = 5
             viewController.view.layer.shadowOpacity = 0.2
         }
@@ -116,7 +116,7 @@ public class SloppySwipingNav: UINavigationController, UIViewControllerTransitio
 
             let sloppySwipingGestures = viewController.view.gestureRecognizers?.filter { $0 is SloppySwipingPanGestureRecognizer }
             if sloppySwipingGestures == nil || sloppySwipingGestures?.count == 0 {
-                let gestureRecognizer = SloppySwipingPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+                let gestureRecognizer = SloppySwipingPanGestureRecognizer(target: self, action: #selector(handlePanGesture(gestureRecognizer:)))
                 gestureRecognizer.delegate = self
                 viewController.view.addGestureRecognizer(gestureRecognizer)
             }
@@ -124,19 +124,19 @@ public class SloppySwipingNav: UINavigationController, UIViewControllerTransitio
 
         func handlePanGesture(gestureRecognizer: UIPanGestureRecognizer) {
             switch gestureRecognizer.state {
-            case .Began:
+            case .began:
                 transitionInProgress = true
-                navigationController?.popViewControllerAnimated(true)
+                navigationController?.popViewController(animated: true)
 
-            case .Changed:
+            case .changed:
                 guard let view = gestureRecognizer.view else {
                     break
                 }
 
-                let translation = gestureRecognizer.translationInView(view)
+                let translation = gestureRecognizer.translation(in: view)
                 let percent: CGFloat = min(max(translation.x / view.frame.width, 0), 1)
 
-                let velocity = gestureRecognizer.velocityInView(view)
+                let velocity = gestureRecognizer.velocity(in: view)
                 if velocity.x > 300 {
                     shouldCompleteTransition = true
                 } else if velocity.x < -300 {
@@ -145,14 +145,14 @@ public class SloppySwipingNav: UINavigationController, UIViewControllerTransitio
                     shouldCompleteTransition = percent > 0.5
                 }
 
-                updateInteractiveTransition(percent)
+                update(percent)
 
-            case .Cancelled, .Ended:
+            case .cancelled, .ended:
                 transitionInProgress = false
-                if !shouldCompleteTransition || gestureRecognizer.state == .Cancelled {
-                    cancelInteractiveTransition()
+                if !shouldCompleteTransition || gestureRecognizer.state == .cancelled {
+                    cancel()
                 } else {
-                    finishInteractiveTransition()
+                    finish()
                 }
 
             default:
@@ -160,14 +160,14 @@ public class SloppySwipingNav: UINavigationController, UIViewControllerTransitio
             }
         }
 
-        func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
             guard
                 let view = gestureRecognizer.view,
                 let gestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer else {
                     return false
             }
 
-            let translation = gestureRecognizer.translationInView(view)
+            let translation = gestureRecognizer.translation(in: view)
             return fabs(translation.x) >= fabs(translation.y)
         }
 
@@ -176,26 +176,26 @@ public class SloppySwipingNav: UINavigationController, UIViewControllerTransitio
     private let animatedTransitioning = AnimatedTransitioning()
     private let interactiveTransition = InteractiveTransition()
 
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
 
         delegate = self
     }
 
-    public func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+    public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
 
         if viewController != viewControllers.first { // Exclude root viewController
-            interactiveTransition.attachToViewController(viewController)
+            interactiveTransition.attachToViewController(viewController: viewController)
         }
     }
 
-    public func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
-        animatedTransitioning.reverse = operation == .Pop
+        animatedTransitioning.reverse = operation == .pop
         return animatedTransitioning
     }
 
-    public func navigationController(navigationController: UINavigationController, interactionControllerForAnimationController animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+    public func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
 
         animatedTransitioning.linerAnimation = interactiveTransition.transitionInProgress
         return interactiveTransition.transitionInProgress ? interactiveTransition : nil
