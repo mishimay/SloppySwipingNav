@@ -126,7 +126,7 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
             switch gestureRecognizer.state {
             case .began:
                 transitionInProgress = true
-                navigationController?.popViewController(animated: true)
+                _ = navigationController?.popViewController(animated: true)
 
             case .changed:
                 guard let view = gestureRecognizer.view else {
