@@ -27,6 +27,7 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
                 let toViewController = transitionContext.viewController(forKey: .to) else {
                     return
             }
+            let initialFrameForFromViewController = transitionContext.initialFrame(for: fromViewController)
             let finalFrameForToViewController = transitionContext.finalFrame(for: toViewController)
             let containerView = transitionContext.containerView
 
@@ -48,7 +49,7 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
                     toViewController.view.frame = finalFrameForToViewController
                     fromViewController.view.frame = finalFrameForToViewController.offsetBy(dx: self.bottomViewOffset, dy: 0)
                 } else {
-                    fromViewController.view.frame = finalFrameForToViewController.offsetBy(dx: fromViewController.view.frame.width, dy: 0)
+                    fromViewController.view.frame = initialFrameForFromViewController.offsetBy(dx: fromViewController.view.frame.width, dy: 0)
                     toViewController.view.frame = finalFrameForToViewController
                 }
             }
@@ -60,7 +61,7 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
                     fromViewController.view.frame = finalFrameForToViewController
                 } else {
                     self.removeShadow(viewController: fromViewController)
-                    fromViewController.view.frame.origin.x = 0
+                    fromViewController.view.frame = initialFrameForFromViewController
                 }
 
                 if transitionContext.transitionWasCancelled {
@@ -154,7 +155,6 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
                 } else {
                     finish()
                 }
-
             default:
                 break
             }
@@ -183,20 +183,20 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
     }
 
     public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-
+        print("ACT::1")
         if viewController != viewControllers.first { // Exclude root viewController
             interactiveTransition.attachToViewController(viewController: viewController)
         }
     }
 
     public func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-
+        print("ACT::2")
         animatedTransitioning.reverse = operation == .pop
         return animatedTransitioning
     }
 
     public func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-
+        print("ACT::3")
         animatedTransitioning.linerAnimation = interactiveTransition.transitionInProgress
         return interactiveTransition.transitionInProgress ? interactiveTransition : nil
     }
