@@ -122,7 +122,7 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
             }
         }
 
-        func handlePanGesture(gestureRecognizer: UIPanGestureRecognizer) {
+        @objc func handlePanGesture(gestureRecognizer: UIPanGestureRecognizer) {
             switch gestureRecognizer.state {
             case .began:
                 transitionInProgress = true
@@ -189,7 +189,7 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
         }
     }
 
-    public func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
         animatedTransitioning.reverse = operation == .pop
         return animatedTransitioning
