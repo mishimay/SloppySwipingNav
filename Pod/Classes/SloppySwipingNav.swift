@@ -168,7 +168,7 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
             }
 
             let translation = gestureRecognizer.translation(in: view)
-            return fabs(translation.x) >= fabs(translation.y)
+            return fabs(translation.x) >= fabs(translation.y) && translation.x > 0.0
         }
 
     }
