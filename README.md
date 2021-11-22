@@ -24,14 +24,23 @@ Swift 3.0
 
 ## Installation
 
-SloppySwipingNav is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+### CocoaPods
+
+To install SloppySwipingNav using through [CocoaPods](http://cocoapods.org), simply add the following line to your Podfile:
 
 ```ruby
 pod "SloppySwipingNav"
 ```
 
-## Author
+### Swift Package Manager
+
+This fork also supports [SPM](https://www.swift.org/package-manager/). To install SloppySwipingNav using SPM, just add following URL as a dependency using Xcode:
+
+```
+https://github.com/moridaffy/SloppySwipingNav
+```
+
+## Original author
 
 Yuki Mishima, mishimaybe@gmail.com
 
