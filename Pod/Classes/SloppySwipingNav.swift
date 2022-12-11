@@ -123,7 +123,7 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
             }
         }
 
-        func handlePanGesture(gestureRecognizer: UIPanGestureRecognizer) {
+        @objc func handlePanGesture(gestureRecognizer: UIPanGestureRecognizer) {
             switch gestureRecognizer.state {
             case .began:
                 transitionInProgress = true
@@ -168,7 +168,7 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
             }
 
             let translation = gestureRecognizer.translation(in: view)
-            return fabs(translation.x) >= fabs(translation.y)
+            return fabs(translation.x) >= fabs(translation.y) && translation.x > 0.0
         }
 
     }
@@ -183,20 +183,17 @@ open class SloppySwipingNav: UINavigationController, UIViewControllerTransitioni
     }
 
     public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        print("ACT::1")
         if viewController != viewControllers.first { // Exclude root viewController
             interactiveTransition.attachToViewController(viewController: viewController)
         }
     }
 
-    public func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        print("ACT::2")
+    public func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         animatedTransitioning.reverse = operation == .pop
         return animatedTransitioning
     }
 
     public func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        print("ACT::3")
         animatedTransitioning.linerAnimation = interactiveTransition.transitionInProgress
         return interactiveTransition.transitionInProgress ? interactiveTransition : nil
     }

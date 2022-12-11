@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "SloppySwipingNav"
-  s.version          = "2.0"
+  s.version          = "1.1.0"
   s.summary          = "NavigationController that provides Sloppy Swiping"
 
 # This description is used to generate tags and improve search results.
